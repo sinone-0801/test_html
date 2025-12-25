@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動画プレーヤー</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #video-player {
+            width: 100%;
+            max-width: 640px;
+            background-color: #000;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .status {
+            margin-top: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>動画選択</h2>
+    
+    <div id="button-container"></div>
+
+    <hr>
+
+    <video id="video-player" controls>
+        <p>お使いのブラウザは動画タグに対応していません。</p>
+    </video>
+    <p class="status" id="current-video">再生中の動画: なし</p>
+
+    <script>
+        // 【設定】ここに ./data/video 内のファイル名を記述してください
+        const videoFiles = [
+            "sample1.mpeg",
+            "vacation.mpg",
+            "meeting_2023.mpeg",
+            "test_video.mpeg"
+        ];
+
+        // ディレクトリのパス
+        const videoDir = "./data/video/";
+
+        const buttonContainer = document.getElementById('button-container');
+        const videoPlayer = document.getElementById('video-player');
+        const statusText = document.getElementById('current-video');
+
+        // ボタンを動的に生成する関数
+        videoFiles.forEach(filename => {
+            // 拡張子(.mpegなど)を削除してラベルを作成
+            // 最後のドット以降を取り除く正規表現を使用
+            const label = filename.replace(/\.[^/.]+$/, "");
+
+            const button = document.createElement('button');
+            button.innerText = label;
+            
+            button.onclick = () => {
+                // パスを結合して再生ソースに設定
+                const fullPath = videoDir + filename;
+                videoPlayer.src = fullPath;
+                videoPlayer.play();
+                statusText.innerText = "再生中の動画: " + label;
+            };
+
+            buttonContainer.appendChild(button);
+        });
+    </script>
+</body>
+</html>
